@@ -64,7 +64,7 @@ class QwenClient:
             response = await self._client.post(
                 f"{self._base_url}/chat/completions",
                 headers={
-                    "Authorization": self._bearer,
+                    "Authorization": f"Bearer {self._bearer}",
                     "Content-Type": "application/json",
                 },
                 json=payload,
