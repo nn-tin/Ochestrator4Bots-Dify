@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111827" />
+    <title>Motives Assistant</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Danh sách trợ lý">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <div>
+            <strong>Motives</strong>
+            <small>Internal Assistant</small>
+          </div>
+        </div>
+
+        <section class="agent-section">
+          <div class="section-label">
+            <span>Đội ngũ hỗ trợ</span>
+            <span class="online-pill"><i></i> 4 online</span>
+          </div>
+
+          <button class="agent-card" type="button" data-prompt="Tôi muốn tạo đơn đi trễ">
+            <span class="agent-icon agent-icon--amber">LT</span>
+            <span class="agent-copy">
+              <strong>Đơn đi trễ</strong>
+              <small>Tạo, gửi và quản lý đơn</small>
+            </span>
+            <span class="agent-arrow" aria-hidden="true">↗</span>
+          </button>
+
+          <button class="agent-card" type="button" data-prompt="Tôi muốn tạo yêu cầu nghỉ phép">
+            <span class="agent-icon agent-icon--violet">NP</span>
+            <span class="agent-copy">
+              <strong>Nghỉ phép</strong>
+              <small>Phép năm, công tác, nghỉ khác</small>
+            </span>
+            <span class="agent-arrow" aria-hidden="true">↗</span>
+          </button>
+
+          <button class="agent-card" type="button" data-prompt="Tôi cần hỗ trợ vấn đề IT">
+            <span class="agent-icon agent-icon--blue">IT</span>
+            <span class="agent-copy">
+              <strong>IT Helpdesk</strong>
+              <small>Thiết bị, tài khoản và phần mềm</small>
+            </span>
+            <span class="agent-arrow" aria-hidden="true">↗</span>
+          </button>
+
+          <button class="agent-card" type="button" data-prompt="Tôi muốn đặt một lịch họp">
+            <span class="agent-icon agent-icon--green">PH</span>
+            <span class="agent-copy">
+              <strong>Đặt lịch & phòng họp</strong>
+              <small>Lịch, phòng và người tham gia</small>
+            </span>
+            <span class="agent-arrow" aria-hidden="true">↗</span>
+          </button>
+        </section>
+
+        <section class="profile-card" id="profileCard">
+          <div class="profile-heading">
+            <div>
+              <span class="section-label-text">Hồ sơ của bạn</span>
+              <p>Dùng để xác thực yêu cầu nội bộ</p>
+            </div>
+            <span class="saved-label" id="savedLabel">Đã lưu</span>
+          </div>
+          <label for="employeeName">Tên nhân viên</label>
+          <input id="employeeName" type="text" autocomplete="name" placeholder="Nguyễn Văn An" />
+          <label for="employeeId">Mã nhân viên</label>
+          <input id="employeeId" type="text" autocomplete="username" placeholder="E001" />
+          <p class="profile-error" id="profileError">Vui lòng nhập đủ tên và mã nhân viên.</p>
+        </section>
+
+        <div class="sidebar-footer">
+          <span class="shield" aria-hidden="true">✓</span>
+          <span><strong>Kết nối nội bộ an toàn</strong><small>Thông tin chỉ dùng trong phiên hỗ trợ</small></span>
+        </div>
+      </aside>
+
+      <main class="chat-panel">
+        <header class="topbar">
+          <div class="assistant-identity">
+            <div class="orchestrator-avatar" aria-hidden="true">M</div>
+            <div>
+              <div class="title-row">
+                <h1>Motives Assistant</h1>
+                <span class="status-dot" title="Đang hoạt động"></span>
+              </div>
+              <p>Tự động kết nối đúng chuyên viên cho yêu cầu của bạn</p>
+            </div>
+          </div>
+          <div class="topbar-actions">
+            <button class="trace-inspector-button" id="logButton" type="button">
+              <span>Log tin nhắn</span>
+            </button>
+            <button class="trace-inspector-button" id="traceInspectorButton" type="button" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 9 4 12l4 3M16 9l4 3-4 3M14 6l-4 12" />
+              </svg>
+              <span>Luồng xử lý</span>
+            </button>
+            <button class="new-chat-button" id="newChatButton" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              <span>Cuộc trò chuyện mới</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="conversation" id="conversation">
+          <section class="welcome" id="welcome">
+            <div class="welcome-symbol" aria-hidden="true">
+              <div class="symbol-core">M</div>
+              <span class="orbit orbit-one"></span>
+              <span class="orbit orbit-two"></span>
+              <span class="orbit orbit-three"></span>
+            </div>
+            <p class="eyebrow">TRỢ LÝ NỘI BỘ MOTIVES</p>
+            <h2>Chào bạn, hôm nay mình<br />có thể giúp gì?</h2>
+            <p class="welcome-subtitle">
+              Chỉ cần mô tả điều bạn cần. Mình sẽ chuyển yêu cầu đến đúng chuyên viên.
+            </p>
+            <div class="suggestion-grid" aria-label="Gợi ý câu hỏi">
+              <button type="button" data-prompt="Ngày mai tôi đi trễ 20 phút vì có việc gia đình">
+                <span class="suggestion-icon suggestion-icon--amber">LT</span>
+                <span><strong>Xin đi trễ</strong><small>Ngày mai tôi đi trễ 20 phút</small></span>
+              </button>
+              <button type="button" data-prompt="Tôi muốn nghỉ phép vào thứ Sáu tuần này">
+                <span class="suggestion-icon suggestion-icon--violet">NP</span>
+                <span><strong>Tạo đơn nghỉ</strong><small>Nghỉ phép vào thứ Sáu</small></span>
+              </button>
+              <button type="button" data-prompt="Máy tính của tôi không kết nối được Wi-Fi">
+                <span class="suggestion-icon suggestion-icon--blue">IT</span>
+                <span><strong>Nhờ IT hỗ trợ</strong><small>Máy không kết nối được Wi-Fi</small></span>
+              </button>
+              <button type="button" data-prompt="Đặt lịch họp review sprint vào chiều mai">
+                <span class="suggestion-icon suggestion-icon--green">PH</span>
+                <span><strong>Đặt lịch họp</strong><small>Review sprint vào chiều mai</small></span>
+              </button>
+            </div>
+          </section>
+
+          <div class="message-list" id="messageList" role="log" aria-live="polite"></div>
+          <div class="typing-row" id="typingIndicator" hidden>
+            <div class="message-avatar">M</div>
+            <div class="typing-bubble" aria-label="Trợ lý đang trả lời">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+
+        <footer class="composer-area">
+          <form class="composer" id="chatForm">
+            <textarea
+              id="messageInput"
+              rows="1"
+              maxlength="4000"
+              placeholder="Nhập yêu cầu của bạn..."
+              aria-label="Tin nhắn"
+            ></textarea>
+            <button class="send-button" id="sendButton" type="submit" aria-label="Gửi tin nhắn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m4 4 17 8-17 8 3-8-3-8Z" /><path d="M7 12h14" />
+              </svg>
+            </button>
+          </form>
+          <p class="composer-hint"><kbd>Enter</kbd> để gửi · <kbd>Shift + Enter</kbd> để xuống dòng</p>
+        </footer>
+      </main>
+    </div>
+
+    <div class="trace-backdrop" id="traceBackdrop" hidden></div>
+    <aside
+      class="trace-drawer"
+      id="traceDrawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="traceTitle"
+      aria-hidden="true"
+    >
+      <header class="trace-header">
+        <div>
+          <p class="eyebrow">DEBUG VIEW</p>
+          <h2 id="traceTitle">Luồng xử lý</h2>
+          <p>Prompt và phản hồi có cấu trúc của từng bước</p>
+        </div>
+        <button class="trace-close" id="traceCloseButton" type="button" aria-label="Đóng">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        </button>
+      </header>
+
+      <div class="trace-content">
+        <div id="workflowSteps"></div>
+        <details class="trace-stage" open>
+          <summary>
+            <span class="trace-step">01</span>
+            <span><strong>Router</strong><small>Chọn bot và chuẩn hóa intent</small></span>
+            <span class="trace-chevron">⌄</span>
+          </summary>
+          <div class="trace-block">
+            <div class="trace-block-title"><span>Prompt</span><button type="button" data-copy-target="routerPrompt">Sao chép</button></div>
+            <pre id="routerPrompt"></pre>
+          </div>
+          <div class="trace-block">
+            <div class="trace-block-title"><span>Response</span><button type="button" data-copy-target="routerResponse">Sao chép</button></div>
+            <pre id="routerResponse"></pre>
+          </div>
+        </details>
+
+        <details class="trace-stage" id="composerTraceStage" open>
+          <summary>
+            <span class="trace-step trace-step--composer">02</span>
+            <span><strong>Composer</strong><small>Soạn yêu cầu gửi tới child bot</small></span>
+            <span class="trace-chevron">⌄</span>
+          </summary>
+          <div class="trace-block">
+            <div class="trace-block-title"><span>Prompt</span><button type="button" data-copy-target="composerPrompt">Sao chép</button></div>
+            <pre id="composerPrompt"></pre>
+          </div>
+          <div class="trace-block">
+            <div class="trace-block-title"><span>Response</span><button type="button" data-copy-target="composerResponse">Sao chép</button></div>
+            <pre id="composerResponse"></pre>
+          </div>
+          <p class="trace-empty" id="composerTraceEmpty" hidden>Composer không được gọi vì Router đã trả lời trực tiếp.</p>
+        </details>
+      </div>
+    </aside>
+
+    <aside
+      class="trace-drawer log-drawer"
+      id="logDrawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="logTitle"
+      aria-hidden="true"
+    >
+      <header class="trace-header">
+        <div>
+          <p class="eyebrow">CONVERSATION STATE</p>
+          <h2 id="logTitle">Log tin nhắn</h2>
+          <p id="logConversationId"></p>
+        </div>
+        <button class="trace-close" id="logCloseButton" type="button" aria-label="Đóng">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        </button>
+      </header>
+      <div class="trace-content" id="logContent"></div>
+    </aside>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
